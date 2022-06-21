@@ -18,22 +18,16 @@ impl StatusBar {
     }
 
     pub fn draw(&self) {
-        match &self.status {
-            Status::Info(status) => {
-                unsafe { *DRAW_COLORS = 0x33 }
-                rect(0, 0, 160, 8 + 2 + 2);
+        let (border_color, text_color, status) = match &self.status {
+            Status::None => (0, 0, ""),
+            Status::Info(status) => (0x33, 2, status.as_str()),
+            Status::Error(status) => (0x40, 4, status.as_str()),
+        };
 
-                unsafe { *DRAW_COLORS = 2 }
-                text(status, 2, 2);
-            }
-            Status::Error(status) => {
-                unsafe { *DRAW_COLORS = 0x40 }
-                rect(0, 0, 160, 8 + 2 + 2);
+        unsafe { *DRAW_COLORS = border_color }
+        rect(0, 0, 160, 8 + 2 + 2);
 
-                unsafe { *DRAW_COLORS = 4 }
-                text(status, 2, 2);
-            }
-            Status::None => {}
-        }
+        unsafe { *DRAW_COLORS = text_color }
+        text(status, 2, 2);
     }
 }
