@@ -1,6 +1,6 @@
 use crate::wasm4::{rect, BUTTON_DOWN, BUTTON_LEFT, BUTTON_RIGHT, BUTTON_UP, DRAW_COLORS};
 use crate::{
-    item::{self, draw_item, Item, STARTING_ITEMS},
+    item::{Item, STARTING_ITEMS},
     ui,
 };
 
@@ -120,22 +120,16 @@ impl Inventory {
             .take(PAGE_COUNT as usize)
             .enumerate()
             .for_each(|(idx, item)| {
-                let x = (start_x
-                    + ((idx as u32 % PAGE_COL_COUNT) * (item::SINGLE_OBJ_PIXELS + item_gap)))
+                let x = (start_x + ((idx as u32 % PAGE_COL_COUNT) * (ui::ITEM_WIDTH_PX + item_gap)))
                     as i32;
                 let y = (start_y
-                    + ((idx as u32 / PAGE_COL_COUNT) * (item::SINGLE_OBJ_PIXELS + item_gap)))
+                    + ((idx as u32 / PAGE_COL_COUNT) * (ui::ITEM_HEIGHT_PX + item_gap)))
                     as i32;
-                draw_item(*item, x, y);
+                ui::draw_item(*item, x, y);
 
                 if (idx as u32 + (current_page * PAGE_COUNT)) == self.select_idx {
                     unsafe { *DRAW_COLORS = 0x40 };
-                    rect(
-                        x - 2,
-                        y - 2,
-                        item::SINGLE_OBJ_PIXELS + 4,
-                        item::SINGLE_OBJ_PIXELS + 4,
-                    );
+                    rect(x - 2, y - 2, ui::ITEM_WIDTH_PX + 4, ui::ITEM_HEIGHT_PX + 4);
                 }
             });
 

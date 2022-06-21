@@ -2,9 +2,6 @@ use once_cell::sync::Lazy;
 use rustc_hash::FxHashMap;
 use strum_macros::EnumIter;
 
-use crate::assets;
-use crate::wasm4::*;
-
 #[repr(u8)]
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq, EnumIter)]
 pub enum Item {
@@ -50,8 +47,27 @@ pub enum Item {
     Business,
 }
 
-static COMBO_DATA: Lazy<FxHashMap<(Item, Item), Item>> = Lazy::new(|| {
-    let mut m = FxHashMap::default();
+pub static STARTING_ITEMS: Lazy<Vec<Item>> = Lazy::new(|| {
+    vec![
+        Item::Water,
+        Item::Tree,
+        Item::IronOre,
+        Item::Ball,
+        Item::Fire,
+        Item::Cloth,
+        Item::Cow,
+        Item::Bottle,
+        Item::Comb,
+        Item::Plate,
+        Item::Spring,
+        Item::Bush,
+    ]
+});
+
+type Recipes = FxHashMap<(Item, Item), Item>;
+
+pub static ITEM_RECIPES: Lazy<Recipes> = Lazy::new(|| {
+    let mut m = Recipes::default();
 
     [
         ((Item::IronOre, Item::Fire), Item::Steel),
@@ -94,30 +110,13 @@ static COMBO_DATA: Lazy<FxHashMap<(Item, Item), Item>> = Lazy::new(|| {
     m
 });
 
-pub static STARTING_ITEMS: Lazy<Vec<Item>> = Lazy::new(|| {
-    vec![
-        Item::Water,
-        Item::Tree,
-        Item::IronOre,
-        Item::Ball,
-        Item::Fire,
-        Item::Cloth,
-        Item::Cow,
-        Item::Bottle,
-        Item::Comb,
-        Item::Plate,
-        Item::Spring,
-        Item::Bush,
-    ]
-});
+pub fn combine_items(recipes: &Recipes, left: &Item, right: &Item) -> Option<Item> {
+    [(*left, *right), (*right, *left)]
+        .iter()
+        .find_map(|key| recipes.get(key).copied())
+}
 
 impl Item {
-    pub fn combine(&self, other: &Item) -> Option<Item> {
-        [(*self, *other), (*other, *self)]
-            .iter()
-            .find_map(|key| COMBO_DATA.get(key).copied())
-    }
-
     pub fn name(&self) -> &'static str {
         match self {
             Item::Water => "Water",
@@ -164,29 +163,6 @@ impl Item {
     }
 }
 
-const OBJ_ALTAS_COL_COUNT: u32 = 8;
-pub const SINGLE_OBJ_PIXELS: u32 = assets::objects::OBJECTS_PNG_WIDTH / OBJ_ALTAS_COL_COUNT;
-
-pub fn draw_item(item_type: Item, x: i32, y: i32) {
-    // TODO: Better color scheme?
-    unsafe { *DRAW_COLORS = 0x234 };
-
-    let src_x = ((item_type as u32) % OBJ_ALTAS_COL_COUNT) * SINGLE_OBJ_PIXELS;
-    let src_y = ((item_type as u32) / OBJ_ALTAS_COL_COUNT) * SINGLE_OBJ_PIXELS;
-
-    blit_sub(
-        &assets::objects::OBJECTS_PNG,
-        x,
-        y,
-        SINGLE_OBJ_PIXELS,
-        SINGLE_OBJ_PIXELS,
-        src_x,
-        src_y,
-        assets::objects::OBJECTS_PNG_WIDTH,
-        assets::objects::OBJECTS_PNG_FLAGS,
-    );
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -205,7 +181,7 @@ mod tests {
         let _a = FxHashMap::from_iter([(1, 2), (1, 3)].into_iter());
 
         let mut items_to_process = STARTING_ITEMS.clone();
-        let mut recipes_to_process = COMBO_DATA
+        let mut recipes_to_process = ITEM_RECIPES
             .iter()
             .map(|(key, value)| Recipe {
                 input: FxHashSet::from_iter([key.0, key.1].into_iter()),
@@ -242,5 +218,24 @@ mod tests {
             "Some stuff are not reachable: {:?}",
             all_items.difference(&reachable_items)
         );
+    }
+
+    #[test]
+    fn test_combine_items() {
+        let recipes1 =
+            FxHashMap::from_iter([((Item::Dog, Item::Chicken), Item::DogChicken)].into_iter());
+        let recipes2 =
+            FxHashMap::from_iter([((Item::Chicken, Item::Dog), Item::DogChicken)].into_iter());
+
+        assert_eq!(
+            combine_items(&recipes1, &Item::Dog, &Item::Chicken),
+            Some(Item::DogChicken)
+        );
+        // order of input should not matter
+        assert_eq!(
+            combine_items(&recipes2, &Item::Dog, &Item::Chicken),
+            Some(Item::DogChicken)
+        );
+        assert_eq!(combine_items(&recipes1, &Item::Dog, &Item::Water), None);
     }
 }

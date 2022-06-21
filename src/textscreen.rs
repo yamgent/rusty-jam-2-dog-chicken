@@ -1,5 +1,5 @@
 use crate::{
-    item::{self, Item, SINGLE_OBJ_PIXELS},
+    item::Item,
     ui,
     wasm4::{rect, DRAW_COLORS},
 };
@@ -24,7 +24,7 @@ impl TextScreen {
                 ui::clear();
                 ui::draw_text_top_center("Find the\nDogChicken", 80, 8);
 
-                item::draw_item(Item::DogChicken, 80 - (SINGLE_OBJ_PIXELS as i32 / 2), 32);
+                ui::draw_item(Item::DogChicken, 80 - (ui::ITEM_WIDTH_PX as i32 / 2), 32);
 
                 ui::draw_text_top_center(
                     "Controls:\nZ: Select left\nX: Select right\n<>^v: Move cursor",
@@ -37,7 +37,7 @@ impl TextScreen {
             TextScreen::Win => {
                 ui::clear();
                 ui::draw_text_top_center("YOU FOUND\nTHE DOGCHICKEN!", 80, 32);
-                item::draw_item(Item::DogChicken, 80 - (SINGLE_OBJ_PIXELS as i32 / 2), 64);
+                ui::draw_item(Item::DogChicken, 80 - (ui::ITEM_WIDTH_PX as i32 / 2), 64);
                 ui::draw_text_top_center("Thanks for\nPlaying", 80, 120);
             }
             TextScreen::Found(item) => {
@@ -45,7 +45,7 @@ impl TextScreen {
                 rect(10, 40, 140, 110);
 
                 ui::draw_text_top_center("New item:", 80, 54);
-                item::draw_item(*item, 80 - (SINGLE_OBJ_PIXELS as i32 / 2), 68);
+                ui::draw_item(*item, 80 - (ui::ITEM_WIDTH_PX as i32 / 2), 68);
                 ui::draw_text_top_center(item.name(), 80, 96);
                 ui::draw_text_top_center("[Press any key\nto continue]", 80, 120);
             }

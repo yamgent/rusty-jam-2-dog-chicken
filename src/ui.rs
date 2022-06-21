@@ -1,4 +1,4 @@
-use crate::wasm4::*;
+use crate::{assets, item::Item, wasm4::*};
 
 const SINGLE_CHAR_PIXEL: u32 = 8;
 
@@ -56,4 +56,29 @@ pub fn draw_text_bottom_right<T: AsRef<str>>(content: T, x: i32, y: i32) {
 pub fn clear() {
     unsafe { *DRAW_COLORS = 0x11 };
     rect(0, 0, 160, 160);
+}
+
+// items
+const OBJECTS_PNG_ALTAS_COL_COUNT: u32 = 8;
+const OBJECTS_PNG_ALTAS_ROW_COUNT: u32 = 5;
+pub const ITEM_WIDTH_PX: u32 = assets::objects::OBJECTS_PNG_WIDTH / OBJECTS_PNG_ALTAS_COL_COUNT;
+pub const ITEM_HEIGHT_PX: u32 = assets::objects::OBJECTS_PNG_HEIGHT / OBJECTS_PNG_ALTAS_ROW_COUNT;
+
+pub fn draw_item(item_type: Item, x: i32, y: i32) {
+    unsafe { *DRAW_COLORS = 0x234 };
+
+    let src_x = ((item_type as u32) % OBJECTS_PNG_ALTAS_COL_COUNT) * ITEM_WIDTH_PX;
+    let src_y = ((item_type as u32) / OBJECTS_PNG_ALTAS_COL_COUNT) * ITEM_HEIGHT_PX;
+
+    blit_sub(
+        &assets::objects::OBJECTS_PNG,
+        x,
+        y,
+        ITEM_WIDTH_PX,
+        ITEM_HEIGHT_PX,
+        src_x,
+        src_y,
+        assets::objects::OBJECTS_PNG_WIDTH,
+        assets::objects::OBJECTS_PNG_FLAGS,
+    );
 }
