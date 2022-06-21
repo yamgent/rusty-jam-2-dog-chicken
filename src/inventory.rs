@@ -1,6 +1,6 @@
 use crate::wasm4::{rect, BUTTON_DOWN, BUTTON_LEFT, BUTTON_RIGHT, BUTTON_UP, DRAW_COLORS};
 use crate::{
-    item::{self, draw_item, Item},
+    item::{self, draw_item, Item, STARTING_ITEMS},
     ui,
 };
 
@@ -20,23 +20,8 @@ pub enum AddResult {
 
 impl Inventory {
     pub fn new() -> Self {
-        let base_items = vec![
-            Item::Water,
-            Item::Tree,
-            Item::IronOre,
-            Item::Ball,
-            Item::Fire,
-            Item::Cloth,
-            Item::Cow,
-            Item::Bottle,
-            Item::Comb,
-            Item::Plate,
-            Item::Spring,
-            Item::Bush,
-        ];
-
         Self {
-            found: base_items,
+            found: STARTING_ITEMS.clone(),
             select_idx: 0,
         }
     }

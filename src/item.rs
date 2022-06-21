@@ -1,11 +1,12 @@
 use once_cell::sync::Lazy;
 use rustc_hash::FxHashMap;
+use strum_macros::EnumIter;
 
 use crate::assets;
 use crate::wasm4::*;
 
 #[repr(u8)]
-#[derive(Clone, Copy, Hash, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq, EnumIter)]
 pub enum Item {
     Water = 0,
     Tree,
@@ -82,6 +83,23 @@ static COMBO_DATA: Lazy<FxHashMap<(Item, Item), Item>> = Lazy::new(|| {
     m
 });
 
+pub static STARTING_ITEMS: Lazy<Vec<Item>> = Lazy::new(|| {
+    vec![
+        Item::Water,
+        Item::Tree,
+        Item::IronOre,
+        Item::Ball,
+        Item::Fire,
+        Item::Cloth,
+        Item::Cow,
+        Item::Bottle,
+        Item::Comb,
+        Item::Plate,
+        Item::Spring,
+        Item::Bush,
+    ]
+});
+
 impl Item {
     pub fn combine(&self, other: &Item) -> Option<Item> {
         [(*self, *other), (*other, *self)]
@@ -156,4 +174,61 @@ pub fn draw_item(item_type: Item, x: i32, y: i32) {
         assets::objects::OBJECTS_PNG_WIDTH,
         assets::objects::OBJECTS_PNG_FLAGS,
     );
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rustc_hash::FxHashSet;
+    use strum::IntoEnumIterator;
+
+    #[test]
+    fn all_items_reachable() {
+        #[derive(Debug)]
+        struct Recipe {
+            input: FxHashSet<Item>,
+            output: Item,
+        }
+
+        let mut reachable_items = FxHashSet::default();
+
+        let mut items_to_process = STARTING_ITEMS.clone();
+        let mut recipes_to_process = COMBO_DATA
+            .iter()
+            .map(|(key, value)| Recipe {
+                input: FxHashSet::from_iter([key.0, key.1].into_iter()),
+                output: *value,
+            })
+            .collect::<Vec<_>>();
+
+        while let Some(item) = items_to_process.pop() {
+            reachable_items.insert(item);
+
+            recipes_to_process.iter_mut().for_each(|recipe| {
+                recipe.input.remove(&item);
+            });
+            recipes_to_process
+                .iter()
+                .filter(|recipe| recipe.input.is_empty())
+                .for_each(|recipe| {
+                    items_to_process.push(recipe.output);
+                });
+            recipes_to_process.retain(|recipe| recipe.input.len() > 0);
+        }
+
+        if !recipes_to_process.is_empty() {
+            panic!(
+                "We still have some recipes remaining and they are not usable: {:?}",
+                recipes_to_process
+            );
+        }
+
+        let all_items = FxHashSet::from_iter(Item::iter());
+        assert_eq!(
+            reachable_items,
+            all_items,
+            "Some stuff are not reachable: {:?}",
+            all_items.difference(&reachable_items)
+        );
+    }
 }
