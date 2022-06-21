@@ -21,7 +21,11 @@ impl Input {
         self.pressed = self.current & (self.current ^ self.previous);
     }
 
-    pub fn pressed(&self) -> u8 {
-        self.pressed
+    pub fn pressed(&self, buttons: u8) -> bool {
+        self.pressed & buttons != 0
+    }
+
+    pub fn pressed_any(&self) -> bool {
+        self.pressed != 0
     }
 }

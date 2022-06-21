@@ -1,3 +1,4 @@
+use crate::input::Input;
 use crate::wasm4::{rect, BUTTON_DOWN, BUTTON_LEFT, BUTTON_RIGHT, BUTTON_UP, DRAW_COLORS};
 use crate::{
     item::{Item, STARTING_ITEMS},
@@ -51,8 +52,8 @@ impl Inventory {
         }
     }
 
-    pub fn update(&mut self, pressed: u8) {
-        if pressed & BUTTON_RIGHT != 0 {
+    pub fn update(&mut self, input: &Input) {
+        if input.pressed(BUTTON_RIGHT) {
             let old_row = self.select_idx / PAGE_COL_COUNT;
             let new_row = (self.select_idx + 1) / PAGE_COL_COUNT;
 
@@ -70,7 +71,7 @@ impl Inventory {
                     }
                 }
             }
-        } else if pressed & BUTTON_LEFT != 0 {
+        } else if input.pressed(BUTTON_LEFT) {
             if self.select_idx > 0 {
                 let old_row = self.select_idx / PAGE_COL_COUNT;
                 let new_row = (self.select_idx - 1) / PAGE_COL_COUNT;
@@ -85,7 +86,7 @@ impl Inventory {
                     }
                 }
             }
-        } else if pressed & BUTTON_UP != 0 {
+        } else if input.pressed(BUTTON_UP) {
             if self.select_idx >= PAGE_COL_COUNT {
                 let old_page = self.current_page();
                 let new_page = (self.select_idx - PAGE_COL_COUNT) / PAGE_COUNT;
@@ -94,7 +95,7 @@ impl Inventory {
                     self.select_idx -= PAGE_COL_COUNT;
                 }
             }
-        } else if pressed & BUTTON_DOWN != 0 {
+        } else if input.pressed(BUTTON_DOWN) {
             if self.select_idx + PAGE_COL_COUNT < self.found.len() as u32 {
                 let old_page = self.current_page();
                 let new_page = (self.select_idx + PAGE_COL_COUNT) / PAGE_COUNT;

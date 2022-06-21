@@ -29,16 +29,15 @@ impl Game {
 
     pub fn update(&mut self) {
         self.input.update();
-        let pressed = self.input.pressed();
 
         if let Some(textscreen) = &self.textscreen {
-            if textscreen.update(pressed) {
+            if textscreen.update(&self.input) {
                 self.textscreen = None;
             }
         } else {
-            self.inventory.update(pressed);
+            self.inventory.update(&self.input);
             let selected_item = self.inventory.selected_item();
-            let selected_combo_result = self.combine.update(pressed, selected_item);
+            let selected_combo_result = self.combine.update(&self.input, selected_item);
 
             if let Some(combo_result) = selected_combo_result {
                 match combo_result.valid_item {

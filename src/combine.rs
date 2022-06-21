@@ -1,4 +1,5 @@
 use crate::{
+    input::Input,
     item::{self, Item},
     ui,
     wasm4::{rect, BUTTON_1, BUTTON_2, DRAW_COLORS},
@@ -47,11 +48,11 @@ impl Combine {
         }
     }
 
-    pub fn update(&mut self, pressed: u8, selected_item: Item) -> Option<ComboResult> {
-        let updated = if pressed & BUTTON_2 != 0 {
+    pub fn update(&mut self, input: &Input, selected_item: Item) -> Option<ComboResult> {
+        let updated = if input.pressed(BUTTON_2) {
             self.left = Some(selected_item);
             true
-        } else if pressed & BUTTON_1 != 0 {
+        } else if input.pressed(BUTTON_1) {
             self.right = Some(selected_item);
             true
         } else {

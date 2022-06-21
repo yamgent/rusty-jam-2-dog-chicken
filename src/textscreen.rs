@@ -1,4 +1,5 @@
 use crate::{
+    input::Input,
     item::Item,
     ui,
     wasm4::{rect, DRAW_COLORS},
@@ -11,9 +12,9 @@ pub enum TextScreen {
 }
 
 impl TextScreen {
-    pub fn update(&self, pressed: u8) -> bool {
+    pub fn update(&self, input: &Input) -> bool {
         match self {
-            TextScreen::Intro | TextScreen::Found(_) => pressed != 0,
+            TextScreen::Intro | TextScreen::Found(_) => input.pressed_any(),
             TextScreen::Win => false,
         }
     }
