@@ -154,6 +154,21 @@ impl Inventory {
                 }
             });
 
+        // page nav indicators
+        if self.total_pages() > 1 {
+            if self.current_page() < self.total_pages() - 1 {
+                ui::draw_text(">\n>\n>\n>\n>\n>", 160 - 8, 70);
+                unsafe { *DRAW_COLORS = 0x20 }
+                rect(160 - 8 - 1, 70 - 2, 7 + 2, 49 + 2);
+            }
+
+            if self.current_page() > 0 {
+                ui::draw_text("<\n<\n<\n<\n<\n<", 1, 70);
+                unsafe { *DRAW_COLORS = 0x20 }
+                rect(0, 70 - 2, 7 + 2, 49 + 2);
+            }
+        }
+
         // bottom text
         ui::draw_text_bottom_left(self.found[self.select_idx as usize].name(), 2, 160 - 2);
         ui::draw_text_bottom_right(
