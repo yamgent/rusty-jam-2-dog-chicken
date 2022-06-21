@@ -49,18 +49,18 @@ impl Screen for IngameScreen {
                                 return Some(Box::new(WinScreen));
                             } else {
                                 self.found_popup.show(item);
-                                sounds::play_good();
+                                sounds::play_hit();
                             }
                         }
                         AddResult::AlreadyFound => {
                             self.status_bar.status =
                                 Status::Error("Already found combo".to_string());
-                            sounds::play_bad();
+                            sounds::play_miss();
                         }
                     },
                     None => {
                         self.status_bar.status = Status::Error("Invalid combo".to_string());
-                        sounds::play_bad();
+                        sounds::play_miss();
                     }
                 }
             }
