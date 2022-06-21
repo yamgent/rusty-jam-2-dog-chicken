@@ -17,7 +17,7 @@ pub struct Combine {
 
 fn draw_combo_box(item: &Option<Item>, x: i32, y: i32) {
     let color = match item {
-        Some(_) => 0x33,
+        Some(_) => 0x22,
         None => 0x30,
     };
 
@@ -28,8 +28,8 @@ fn draw_combo_box(item: &Option<Item>, x: i32, y: i32) {
 fn draw_result_box(result: &Option<ComboResult>, x: i32, y: i32) {
     let color = match result {
         Some(result) => match result.valid_item {
-            Some(_) => 0x33,
-            None => 0x32,
+            Some(_) => 0x22,
+            None => 0x40,
         },
         None => 0x30,
     };

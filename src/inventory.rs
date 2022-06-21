@@ -13,6 +13,11 @@ pub struct Inventory {
     select_idx: u32,
 }
 
+pub enum AddResult {
+    Success,
+    AlreadyFound,
+}
+
 impl Inventory {
     pub fn new() -> Self {
         let base_items = vec![
@@ -49,6 +54,15 @@ impl Inventory {
             0
         } else {
             (((self.found.len() as u32) - 1) / PAGE_COUNT) + 1
+        }
+    }
+
+    pub fn add_found(&mut self, new_item: Item) -> AddResult {
+        if self.found.contains(&new_item) {
+            AddResult::AlreadyFound
+        } else {
+            self.found.push(new_item);
+            AddResult::Success
         }
     }
 
