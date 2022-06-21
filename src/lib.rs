@@ -1,14 +1,11 @@
 #[cfg(feature = "buddy-alloc")]
 mod alloc;
 mod assets;
-mod combine;
 mod game;
 mod input;
-mod inventory;
 mod item;
 mod screens;
 mod sounds;
-mod status_bar;
 mod ui;
 mod wasm4;
 

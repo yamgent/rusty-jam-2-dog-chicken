@@ -1,16 +1,15 @@
+mod combine;
 mod found_popup;
+mod inventory;
+mod status_bar;
 
+use combine::Combine;
 use found_popup::FoundPopup;
+use inventory::{AddResult, Inventory};
+use status_bar::{Status, StatusBar};
 
 use super::{win::WinScreen, Screen};
-use crate::{
-    combine::Combine,
-    input::Input,
-    inventory::{AddResult, Inventory},
-    item::Item,
-    sounds,
-    status_bar::{Status, StatusBar},
-};
+use crate::{input::Input, item::Item, sounds};
 
 pub struct IngameScreen {
     inventory: Inventory,
