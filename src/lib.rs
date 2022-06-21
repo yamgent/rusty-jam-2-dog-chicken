@@ -39,26 +39,23 @@ fn update() {
 
         if let Some(combo_result) = selected_combo_result {
             match combo_result.valid_item {
-                Some(item) => {
-                    // TODO: handle this
-                    match game_state.inventory.add_found(item) {
-                        inventory::AddResult::Success => {
-                            game_state.status_bar.status = Status::Info("NEW!!".to_string());
-                            if matches!(item, Item::DogChicken) {
-                                game_state.textscreen = Some(TextScreen::Win);
-                                sounds::play_win();
-                            } else {
-                                game_state.textscreen = Some(TextScreen::Found(item));
-                                sounds::play_good();
-                            }
-                        }
-                        inventory::AddResult::AlreadyFound => {
-                            game_state.status_bar.status =
-                                Status::Error("Already found combo".to_string());
-                            sounds::play_bad();
+                Some(item) => match game_state.inventory.add_found(item) {
+                    inventory::AddResult::Success => {
+                        game_state.status_bar.status = Status::Info("NEW!!".to_string());
+                        if matches!(item, Item::DogChicken) {
+                            game_state.textscreen = Some(TextScreen::Win);
+                            sounds::play_win();
+                        } else {
+                            game_state.textscreen = Some(TextScreen::Found(item));
+                            sounds::play_good();
                         }
                     }
-                }
+                    inventory::AddResult::AlreadyFound => {
+                        game_state.status_bar.status =
+                            Status::Error("Already found combo".to_string());
+                        sounds::play_bad();
+                    }
+                },
                 None => {
                     game_state.status_bar.status = Status::Error("Invalid combo".to_string());
                     sounds::play_bad();

@@ -20,7 +20,6 @@ impl StatusBar {
     pub fn draw(&self) {
         match &self.status {
             Status::Info(status) => {
-                // TODO: Different color
                 unsafe { *DRAW_COLORS = 0x33 }
                 rect(0, 0, 160, 8 + 2 + 2);
 
