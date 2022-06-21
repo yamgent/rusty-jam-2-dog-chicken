@@ -7,6 +7,7 @@ mod input;
 mod inventory;
 mod item;
 mod status_bar;
+mod textscreen;
 mod ui;
 mod wasm4;
 
@@ -14,7 +15,6 @@ use game_state::GameState;
 use once_cell::sync::Lazy;
 use status_bar::Status;
 use std::sync::Mutex;
-use wasm4::*;
 
 static GAME_STATE: Lazy<Mutex<GameState>> = Lazy::new(|| Mutex::new(GameState::new()));
 
@@ -22,38 +22,36 @@ static GAME_STATE: Lazy<Mutex<GameState>> = Lazy::new(|| Mutex::new(GameState::n
 fn update() {
     let mut game_state = GAME_STATE.lock().unwrap();
 
-    unsafe { *DRAW_COLORS = 3 }
-
-    let gamepad = unsafe { *GAMEPAD1 };
-    if gamepad & BUTTON_1 != 0 {
-        unsafe { *DRAW_COLORS = 4 }
-    }
-
     game_state.input.update();
-
     let pressed = game_state.input.pressed();
-    game_state.inventory.update(pressed);
-    let selected_item = game_state.inventory.selected_item();
-    // TODO: Use result
-    let selected_combo_result = game_state.combine.update(pressed, selected_item);
 
-    if let Some(combo_result) = selected_combo_result {
-        match combo_result.valid_item {
-            Some(item) => {
-                // TODO: handle this
-                match game_state.inventory.add_found(item) {
-                    inventory::AddResult::Success => {
-                        game_state.status_bar.status = Status::Info("NEW!!".to_string());
-                        // TODO: Show a "You Found!" screen
-                    }
-                    inventory::AddResult::AlreadyFound => {
-                        game_state.status_bar.status =
-                            Status::Error("Already found combo".to_string());
+    if let Some(textscreen) = &game_state.textscreen {
+        if textscreen.update(pressed) {
+            game_state.textscreen = None;
+        }
+    } else {
+        game_state.inventory.update(pressed);
+        let selected_item = game_state.inventory.selected_item();
+        let selected_combo_result = game_state.combine.update(pressed, selected_item);
+
+        if let Some(combo_result) = selected_combo_result {
+            match combo_result.valid_item {
+                Some(item) => {
+                    // TODO: handle this
+                    match game_state.inventory.add_found(item) {
+                        inventory::AddResult::Success => {
+                            game_state.status_bar.status = Status::Info("NEW!!".to_string());
+                            // TODO: Show a "You Found!" screen
+                        }
+                        inventory::AddResult::AlreadyFound => {
+                            game_state.status_bar.status =
+                                Status::Error("Already found combo".to_string());
+                        }
                     }
                 }
-            }
-            None => {
-                game_state.status_bar.status = Status::Error("Invalid combo".to_string());
+                None => {
+                    game_state.status_bar.status = Status::Error("Invalid combo".to_string());
+                }
             }
         }
     }
@@ -61,4 +59,8 @@ fn update() {
     game_state.combine.draw();
     game_state.inventory.draw();
     game_state.status_bar.draw();
+
+    if let Some(textscreen) = &game_state.textscreen {
+        textscreen.draw();
+    }
 }

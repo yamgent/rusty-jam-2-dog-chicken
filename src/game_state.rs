@@ -1,10 +1,14 @@
-use crate::{combine::Combine, input::Input, inventory::Inventory, status_bar::StatusBar};
+use crate::{
+    combine::Combine, input::Input, inventory::Inventory, status_bar::StatusBar,
+    textscreen::TextScreen,
+};
 
 pub struct GameState {
     pub inventory: Inventory,
     pub input: Input,
     pub combine: Combine,
     pub status_bar: StatusBar,
+    pub textscreen: Option<TextScreen>,
 }
 
 impl GameState {
@@ -14,6 +18,7 @@ impl GameState {
             input: Input::new(),
             combine: Combine::new(),
             status_bar: StatusBar::new(),
+            textscreen: Some(TextScreen::Intro),
         }
     }
 }
