@@ -1,0 +1,8 @@
+{{#sprites}}
+// {{name}}_png
+pub const {{rustName}}_PNG_WIDTH: u32 = {{width}};
+pub const {{rustName}}_PNG_HEIGHT: u32 = {{height}};
+pub const {{rustName}}_PNG_FLAGS: u32 = {{flags}}; // {{flagsHumanReadable}}
+#[rustfmt::skip]
+pub const {{rustName}}_PNG: [u8; {{length}}] = [ {{bytes}} ];
+{{/sprites}}

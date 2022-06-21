@@ -1,5 +1,6 @@
 #[cfg(feature = "buddy-alloc")]
 mod alloc;
+mod assets;
 mod wasm4;
 use wasm4::*;
 
@@ -17,7 +18,7 @@ const SMILEY: [u8; 8] = [
 
 #[no_mangle]
 fn update() {
-    unsafe { *DRAW_COLORS = 2 }
+    unsafe { *DRAW_COLORS = 0x0222 }
     text("Hello from Rust!", 10, 10);
 
     let gamepad = unsafe { *GAMEPAD1 };
@@ -26,5 +27,13 @@ fn update() {
     }
 
     blit(&SMILEY, 76, 76, 8, 8, BLIT_1BPP);
+    blit(
+        &assets::objects::OBJECTS_PNG,
+        0,
+        0,
+        assets::objects::OBJECTS_PNG_WIDTH,
+        assets::objects::OBJECTS_PNG_HEIGHT,
+        assets::objects::OBJECTS_PNG_FLAGS,
+    );
     text("Press X to blink", 16, 90);
 }
