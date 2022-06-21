@@ -61,8 +61,9 @@ pub fn clear() {
 // items
 const OBJECTS_PNG_ALTAS_COL_COUNT: u32 = 8;
 const OBJECTS_PNG_ALTAS_ROW_COUNT: u32 = 5;
-pub const ITEM_WIDTH_PX: u32 = assets::objects::OBJECTS_PNG_WIDTH / OBJECTS_PNG_ALTAS_COL_COUNT;
-pub const ITEM_HEIGHT_PX: u32 = assets::objects::OBJECTS_PNG_HEIGHT / OBJECTS_PNG_ALTAS_ROW_COUNT;
+pub const ITEM_WIDTH_PX: u32 = assets::objects_png::OBJECTS_PNG_WIDTH / OBJECTS_PNG_ALTAS_COL_COUNT;
+pub const ITEM_HEIGHT_PX: u32 =
+    assets::objects_png::OBJECTS_PNG_HEIGHT / OBJECTS_PNG_ALTAS_ROW_COUNT;
 
 pub fn draw_item(item_type: Item, x: i32, y: i32) {
     unsafe { *DRAW_COLORS = 0x234 };
@@ -71,14 +72,14 @@ pub fn draw_item(item_type: Item, x: i32, y: i32) {
     let src_y = ((item_type as u32) / OBJECTS_PNG_ALTAS_COL_COUNT) * ITEM_HEIGHT_PX;
 
     blit_sub(
-        &assets::objects::OBJECTS_PNG,
+        &assets::objects_png::OBJECTS_PNG,
         x,
         y,
         ITEM_WIDTH_PX,
         ITEM_HEIGHT_PX,
         src_x,
         src_y,
-        assets::objects::OBJECTS_PNG_WIDTH,
-        assets::objects::OBJECTS_PNG_FLAGS,
+        assets::objects_png::OBJECTS_PNG_WIDTH,
+        assets::objects_png::OBJECTS_PNG_FLAGS,
     );
 }
