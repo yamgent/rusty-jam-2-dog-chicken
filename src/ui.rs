@@ -52,3 +52,8 @@ pub fn draw_text_bottom_right<T: AsRef<str>>(content: T, x: i32, y: i32) {
             });
     }
 }
+
+pub fn clear() {
+    unsafe { *DRAW_COLORS = 0x11 };
+    rect(0, 0, 160, 160);
+}

@@ -12,9 +12,11 @@ mod ui;
 mod wasm4;
 
 use game_state::GameState;
+use item::Item;
 use once_cell::sync::Lazy;
 use status_bar::Status;
 use std::sync::Mutex;
+use textscreen::TextScreen;
 
 static GAME_STATE: Lazy<Mutex<GameState>> = Lazy::new(|| Mutex::new(GameState::new()));
 
@@ -41,7 +43,11 @@ fn update() {
                     match game_state.inventory.add_found(item) {
                         inventory::AddResult::Success => {
                             game_state.status_bar.status = Status::Info("NEW!!".to_string());
-                            // TODO: Show a "You Found!" screen
+                            if matches!(item, Item::DogChicken) {
+                                game_state.textscreen = Some(TextScreen::Win);
+                            } else {
+                                // TODO: Show a "You Found!" screen
+                            }
                         }
                         inventory::AddResult::AlreadyFound => {
                             game_state.status_bar.status =
