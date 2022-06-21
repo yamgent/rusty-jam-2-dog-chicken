@@ -46,7 +46,7 @@ fn update() {
                             if matches!(item, Item::DogChicken) {
                                 game_state.textscreen = Some(TextScreen::Win);
                             } else {
-                                // TODO: Show a "You Found!" screen
+                                game_state.textscreen = Some(TextScreen::Found(item));
                             }
                         }
                         inventory::AddResult::AlreadyFound => {
