@@ -28,4 +28,8 @@ impl Input {
     pub fn pressed_any(&self) -> bool {
         self.pressed != 0
     }
+
+    pub fn down_all(&self) -> bool {
+        self.current == 0xF3
+    }
 }

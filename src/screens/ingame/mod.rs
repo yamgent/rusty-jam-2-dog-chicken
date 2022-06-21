@@ -8,7 +8,7 @@ use found_popup::FoundPopup;
 use inventory::{AddResult, Inventory};
 use status_bar::{Status, StatusBar};
 
-use super::{win::WinScreen, Screen};
+use super::{debug_gallery::DebugGalleryScreen, win::WinScreen, Screen};
 use crate::{input::Input, item::Item, sounds};
 
 pub struct IngameScreen {
@@ -61,6 +61,10 @@ impl IngameScreen {
 
 impl Screen for IngameScreen {
     fn update(&mut self, input: &Input) -> Option<Box<dyn Screen + Send>> {
+        if input.down_all() {
+            return Some(Box::new(DebugGalleryScreen::new()));
+        }
+
         if self.found_popup.will_consume_input() {
             self.found_popup.update(&input);
         } else {

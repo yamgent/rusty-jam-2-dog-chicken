@@ -1,5 +1,6 @@
 use crate::input::Input;
 
+pub mod debug_gallery;
 pub mod ingame;
 pub mod intro;
 pub mod win;
