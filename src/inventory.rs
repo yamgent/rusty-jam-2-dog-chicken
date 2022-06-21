@@ -77,9 +77,12 @@ impl Inventory {
                 }
             } else {
                 let new_idx = self.select_idx + PAGE_COUNT - (PAGE_COL_COUNT - 1);
-                if self.current_page() + 1 < self.total_pages() && new_idx < self.found.len() as u32
-                {
-                    self.select_idx = new_idx;
+                if self.current_page() + 1 < self.total_pages() {
+                    if new_idx < self.found.len() as u32 {
+                        self.select_idx = new_idx;
+                    } else {
+                        self.select_idx = (self.current_page() + 1) * PAGE_COUNT;
+                    }
                 }
             }
         } else if pressed & BUTTON_LEFT != 0 {
