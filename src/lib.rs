@@ -1,6 +1,7 @@
 #[cfg(feature = "buddy-alloc")]
 mod alloc;
 mod assets;
+mod combine;
 mod game_state;
 mod input;
 mod inventory;
@@ -9,7 +10,6 @@ mod ui;
 mod wasm4;
 
 use game_state::GameState;
-use item::SINGLE_OBJ_PIXELS;
 use once_cell::sync::Lazy;
 use std::sync::Mutex;
 use wasm4::*;
@@ -31,27 +31,16 @@ fn update() {
 
     let pressed = game_state.input.pressed();
     game_state.inventory.update(pressed);
+    let selected_item = game_state.inventory.selected_item();
+    // TODO: Use result
+    let selected_combo_result = game_state.combine.update(pressed, selected_item);
 
-    // TODO: Clean up selection UI
-    item::draw_item(item::Item::Cow, 18, 16);
-    item::draw_item(item::Item::Cow, 66, 16);
-    item::draw_item(item::Item::Cow, 116, 16);
-
+    game_state.combine.draw();
     game_state.inventory.draw();
 
     // TODO: Clean up selection UI
     unsafe { *DRAW_COLORS = 0x40 }
-    rect(18 - 2, 16 - 2, SINGLE_OBJ_PIXELS + 4, SINGLE_OBJ_PIXELS + 4);
-    rect(66 - 2, 16 - 2, SINGLE_OBJ_PIXELS + 4, SINGLE_OBJ_PIXELS + 4);
-    rect(
-        116 - 2,
-        16 - 2,
-        SINGLE_OBJ_PIXELS + 4,
-        SINGLE_OBJ_PIXELS + 4,
-    );
     rect(0, 0, 160, 8 + 2 + 2);
     unsafe { *DRAW_COLORS = 3 }
-    text("+", 50, 16 + 8);
-    text("=", 100, 16 + 8);
     text("Already found", 2, 2);
 }

@@ -1,8 +1,9 @@
-use crate::{input::Input, inventory::Inventory};
+use crate::{combine::Combine, input::Input, inventory::Inventory};
 
 pub struct GameState {
     pub inventory: Inventory,
     pub input: Input,
+    pub combine: Combine,
 }
 
 impl GameState {
@@ -10,6 +11,7 @@ impl GameState {
         Self {
             inventory: Inventory::new(),
             input: Input::new(),
+            combine: Combine::new(),
         }
     }
 }

@@ -1,8 +1,11 @@
+use once_cell::sync::Lazy;
+use rustc_hash::FxHashMap;
+
 use crate::assets;
 use crate::wasm4::*;
 
 #[repr(u8)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Hash, PartialEq, Eq)]
 pub enum Item {
     Water = 0,
     Tree,
@@ -46,7 +49,46 @@ pub enum Item {
     Business,
 }
 
+static COMBO_DATA: Lazy<FxHashMap<(Item, Item), Item>> = Lazy::new(|| {
+    let mut m = FxHashMap::default();
+    m.insert((Item::IronOre, Item::Fire), Item::Steel);
+    m.insert((Item::Tree, Item::Steel), Item::Axe);
+    m.insert((Item::Tree, Item::Axe), Item::Twig);
+    m.insert((Item::Cloth, Item::Twig), Item::Flag);
+    m.insert((Item::Cloth, Item::Steel), Item::Medal);
+    m.insert((Item::Flag, Item::Medal), Item::Loyalty);
+    m.insert((Item::Cow, Item::Bottle), Item::Milk);
+    m.insert((Item::Axe, Item::Bush), Item::Grass);
+    m.insert((Item::Grass, Item::Twig), Item::Bird);
+    m.insert((Item::Fire, Item::Cow), Item::Beef);
+    m.insert((Item::Beef, Item::Milk), Item::Cat);
+    m.insert((Item::Comb, Item::Cat), Item::Fur);
+    m.insert((Item::Fur, Item::Loyalty), Item::Dog);
+    m.insert((Item::Bird, Item::Plate), Item::Chicken);
+    m.insert((Item::Dog, Item::Chicken), Item::DogChicken);
+    m.insert((Item::Ball, Item::Steel), Item::Strong);
+    m.insert((Item::Steel, Item::Spring), Item::Tong);
+    m.insert((Item::Strong, Item::Tong), Item::Crab);
+    m.insert((Item::Steel, Item::Water), Item::Rust);
+    m.insert((Item::Crab, Item::Rust), Item::Rustacean);
+    m.insert((Item::Bottle, Item::Water), Item::Rum);
+    m.insert((Item::Flag, Item::Rum), Item::Pirate);
+    m.insert((Item::Pirate, Item::Rustacean), Item::PirateRustacean);
+    m.insert((Item::Water, Item::Bird), Item::Swan);
+    m.insert((Item::Cat, Item::Bird), Item::FoodChain);
+    m.insert((Item::Strong, Item::Bird), Item::Hawk);
+    m.insert((Item::Beef, Item::Plate), Item::Meal);
+    m.insert((Item::Meal, Item::FoodChain), Item::Business);
+    m
+});
+
 impl Item {
+    pub fn combine(&self, other: &Item) -> Option<Item> {
+        [(*self, *other), (*other, *self)]
+            .iter()
+            .find_map(|key| COMBO_DATA.get(key).copied())
+    }
+
     pub fn name(&self) -> &'static str {
         match self {
             Item::Water => "Water",
@@ -98,7 +140,7 @@ pub const SINGLE_OBJ_PIXELS: u32 = assets::objects::OBJECTS_PNG_WIDTH / OBJ_ALTA
 
 pub fn draw_item(item_type: Item, x: i32, y: i32) {
     // TODO: Better color scheme?
-    unsafe { *DRAW_COLORS = 0x123 };
+    unsafe { *DRAW_COLORS = 0x234 };
 
     let src_x = ((item_type as u32) % OBJ_ALTAS_COL_COUNT) * SINGLE_OBJ_PIXELS;
     let src_y = ((item_type as u32) / OBJ_ALTAS_COL_COUNT) * SINGLE_OBJ_PIXELS;

@@ -3,7 +3,7 @@ use crate::wasm4::*;
 const SINGLE_CHAR_PIXEL: u32 = 8;
 
 pub fn draw_text<T: AsRef<str>>(content: T, x: i32, y: i32) {
-    unsafe { *DRAW_COLORS = 3 }
+    unsafe { *DRAW_COLORS = 0x04 }
     text(content, x, y);
 }
 

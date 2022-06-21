@@ -36,6 +36,10 @@ impl Inventory {
         }
     }
 
+    pub fn selected_item(&self) -> Item {
+        self.found[self.select_idx as usize]
+    }
+
     fn current_page(&self) -> u32 {
         self.select_idx / PAGE_COUNT
     }
