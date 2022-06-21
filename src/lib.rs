@@ -6,6 +6,7 @@ mod game_state;
 mod input;
 mod inventory;
 mod item;
+mod sounds;
 mod status_bar;
 mod textscreen;
 mod ui;
@@ -45,18 +46,22 @@ fn update() {
                             game_state.status_bar.status = Status::Info("NEW!!".to_string());
                             if matches!(item, Item::DogChicken) {
                                 game_state.textscreen = Some(TextScreen::Win);
+                                sounds::play_win();
                             } else {
                                 game_state.textscreen = Some(TextScreen::Found(item));
+                                sounds::play_good();
                             }
                         }
                         inventory::AddResult::AlreadyFound => {
                             game_state.status_bar.status =
                                 Status::Error("Already found combo".to_string());
+                            sounds::play_bad();
                         }
                     }
                 }
                 None => {
                     game_state.status_bar.status = Status::Error("Invalid combo".to_string());
+                    sounds::play_bad();
                 }
             }
         }
