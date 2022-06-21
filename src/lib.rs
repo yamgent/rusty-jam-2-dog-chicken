@@ -6,6 +6,7 @@ mod game;
 mod input;
 mod inventory;
 mod item;
+mod screens;
 mod sounds;
 mod status_bar;
 mod textscreen;
