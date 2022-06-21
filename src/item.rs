@@ -52,34 +52,45 @@ pub enum Item {
 
 static COMBO_DATA: Lazy<FxHashMap<(Item, Item), Item>> = Lazy::new(|| {
     let mut m = FxHashMap::default();
-    m.insert((Item::IronOre, Item::Fire), Item::Steel);
-    m.insert((Item::Tree, Item::Steel), Item::Axe);
-    m.insert((Item::Tree, Item::Axe), Item::Twig);
-    m.insert((Item::Cloth, Item::Twig), Item::Flag);
-    m.insert((Item::Cloth, Item::Steel), Item::Medal);
-    m.insert((Item::Flag, Item::Medal), Item::Loyalty);
-    m.insert((Item::Cow, Item::Bottle), Item::Milk);
-    m.insert((Item::Axe, Item::Bush), Item::Grass);
-    m.insert((Item::Grass, Item::Twig), Item::Bird);
-    m.insert((Item::Fire, Item::Cow), Item::Beef);
-    m.insert((Item::Beef, Item::Milk), Item::Cat);
-    m.insert((Item::Comb, Item::Cat), Item::Fur);
-    m.insert((Item::Fur, Item::Loyalty), Item::Dog);
-    m.insert((Item::Bird, Item::Plate), Item::Chicken);
-    m.insert((Item::Dog, Item::Chicken), Item::DogChicken);
-    m.insert((Item::Ball, Item::Steel), Item::Strong);
-    m.insert((Item::Steel, Item::Spring), Item::Tong);
-    m.insert((Item::Strong, Item::Tong), Item::Crab);
-    m.insert((Item::Steel, Item::Water), Item::Rust);
-    m.insert((Item::Crab, Item::Rust), Item::Rustacean);
-    m.insert((Item::Bottle, Item::Water), Item::Rum);
-    m.insert((Item::Flag, Item::Rum), Item::Pirate);
-    m.insert((Item::Pirate, Item::Rustacean), Item::PirateRustacean);
-    m.insert((Item::Water, Item::Bird), Item::Swan);
-    m.insert((Item::Cat, Item::Bird), Item::FoodChain);
-    m.insert((Item::Strong, Item::Bird), Item::Hawk);
-    m.insert((Item::Beef, Item::Plate), Item::Meal);
-    m.insert((Item::Meal, Item::FoodChain), Item::Business);
+
+    [
+        ((Item::IronOre, Item::Fire), Item::Steel),
+        ((Item::Tree, Item::Steel), Item::Axe),
+        ((Item::Tree, Item::Axe), Item::Twig),
+        ((Item::Cloth, Item::Twig), Item::Flag),
+        ((Item::Cloth, Item::Steel), Item::Medal),
+        ((Item::Flag, Item::Medal), Item::Loyalty),
+        ((Item::Cow, Item::Bottle), Item::Milk),
+        ((Item::Axe, Item::Bush), Item::Grass),
+        ((Item::Grass, Item::Twig), Item::Bird),
+        ((Item::Fire, Item::Cow), Item::Beef),
+        ((Item::Beef, Item::Milk), Item::Cat),
+        ((Item::Comb, Item::Cat), Item::Fur),
+        ((Item::Fur, Item::Loyalty), Item::Dog),
+        ((Item::Bird, Item::Plate), Item::Chicken),
+        ((Item::Dog, Item::Chicken), Item::DogChicken),
+        ((Item::Ball, Item::Steel), Item::Strong),
+        ((Item::Steel, Item::Spring), Item::Tong),
+        ((Item::Strong, Item::Tong), Item::Crab),
+        ((Item::Steel, Item::Water), Item::Rust),
+        ((Item::Crab, Item::Rust), Item::Rustacean),
+        ((Item::Bottle, Item::Water), Item::Rum),
+        ((Item::Flag, Item::Rum), Item::Pirate),
+        ((Item::Pirate, Item::Rustacean), Item::PirateRustacean),
+        ((Item::Water, Item::Bird), Item::Swan),
+        ((Item::Cat, Item::Bird), Item::FoodChain),
+        ((Item::Strong, Item::Bird), Item::Hawk),
+        ((Item::Beef, Item::Plate), Item::Meal),
+        ((Item::Meal, Item::FoodChain), Item::Business),
+    ]
+    .into_iter()
+    .for_each(|(key, value)| {
+        if m.contains_key(&(key.0, key.1)) || m.contains_key(&(key.1, key.0)) {
+            panic!("This input is a duplicate: {:?}", key);
+        }
+        m.insert(key, value);
+    });
+
     m
 });
 
@@ -191,6 +202,7 @@ mod tests {
         }
 
         let mut reachable_items = FxHashSet::default();
+        let _a = FxHashMap::from_iter([(1, 2), (1, 3)].into_iter());
 
         let mut items_to_process = STARTING_ITEMS.clone();
         let mut recipes_to_process = COMBO_DATA
