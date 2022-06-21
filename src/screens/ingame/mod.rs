@@ -3,7 +3,7 @@ mod found_popup;
 mod inventory;
 mod status_bar;
 
-use combine::Combine;
+use combine::CombineUi;
 use found_popup::FoundPopup;
 use inventory::{AddResult, Inventory};
 use status_bar::{Status, StatusBar};
@@ -13,7 +13,7 @@ use crate::{input::Input, item::Item, sounds};
 
 pub struct IngameScreen {
     inventory: Inventory,
-    combine: Combine,
+    combine_ui: CombineUi,
     status_bar: StatusBar,
     found_popup: FoundPopup,
 }
@@ -22,7 +22,7 @@ impl IngameScreen {
     pub fn new() -> Self {
         Self {
             inventory: Inventory::new(),
-            combine: Combine::new(),
+            combine_ui: CombineUi::new(),
             status_bar: StatusBar::new(),
             found_popup: FoundPopup::new(),
         }
@@ -36,7 +36,7 @@ impl Screen for IngameScreen {
         } else {
             self.inventory.update(input);
             let selected_item = self.inventory.selected_item();
-            let selected_combo_result = self.combine.update(input, selected_item);
+            let selected_combo_result = self.combine_ui.update(input, selected_item);
 
             if let Some(combo_result) = selected_combo_result {
                 match combo_result.valid_item {
@@ -70,7 +70,7 @@ impl Screen for IngameScreen {
 
     fn draw(&self) {
         self.inventory.draw();
-        self.combine.draw();
+        self.combine_ui.draw();
         self.status_bar.draw();
         self.found_popup.draw();
     }
