@@ -2,19 +2,24 @@
 mod alloc;
 mod assets;
 mod game_state;
+mod input;
 mod inventory;
 mod item;
+mod ui;
 mod wasm4;
 
 use game_state::GameState;
 use item::SINGLE_OBJ_PIXELS;
 use once_cell::sync::Lazy;
+use std::sync::Mutex;
 use wasm4::*;
 
-static GAME_STATE: Lazy<GameState> = Lazy::new(GameState::new);
+static GAME_STATE: Lazy<Mutex<GameState>> = Lazy::new(|| Mutex::new(GameState::new()));
 
 #[no_mangle]
 fn update() {
+    let mut game_state = GAME_STATE.lock().unwrap();
+
     unsafe { *DRAW_COLORS = 3 }
 
     let gamepad = unsafe { *GAMEPAD1 };
@@ -22,14 +27,17 @@ fn update() {
         unsafe { *DRAW_COLORS = 4 }
     }
 
-    unsafe { *DRAW_COLORS = 0x123 };
+    game_state.input.update();
+
+    let pressed = game_state.input.pressed();
+    game_state.inventory.update(pressed);
 
     // TODO: Clean up selection UI
     item::draw_item(item::Item::Cow, 18, 16);
     item::draw_item(item::Item::Cow, 66, 16);
     item::draw_item(item::Item::Cow, 116, 16);
 
-    GAME_STATE.inventory.draw();
+    game_state.inventory.draw();
 
     // TODO: Clean up selection UI
     unsafe { *DRAW_COLORS = 0x40 }
@@ -46,9 +54,4 @@ fn update() {
     text("+", 50, 16 + 8);
     text("=", 100, 16 + 8);
     text("Already found", 2, 2);
-
-    // TODO: Clean up inventory UI
-    text("Water", 2, 160 - (8 + 2));
-    text("Page", 160 - (8 * 4) - 2, 160 - ((8 + 2) * 2));
-    text("1/1", 160 - (8 * 3) - 2, 160 - (8 + 2));
 }
