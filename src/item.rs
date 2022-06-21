@@ -44,7 +44,7 @@ pub enum Item {
     FoodChain,
     Hawk,
     Meal,
-    Business,
+    Rat,
 }
 
 pub static STARTING_ITEMS: Lazy<Vec<Item>> = Lazy::new(|| {
@@ -80,7 +80,8 @@ pub static ITEM_RECIPES: Lazy<Recipes> = Lazy::new(|| {
         ((Item::Axe, Item::Bush), Item::Grass),
         ((Item::Grass, Item::Twig), Item::Bird),
         ((Item::Fire, Item::Cow), Item::Beef),
-        ((Item::Beef, Item::Milk), Item::Cat),
+        ((Item::Milk, Item::Plate), Item::Rat),
+        ((Item::Beef, Item::Rat), Item::Cat),
         ((Item::Comb, Item::Cat), Item::Fur),
         ((Item::Fur, Item::Loyalty), Item::Dog),
         ((Item::Bird, Item::Plate), Item::Chicken),
@@ -97,7 +98,6 @@ pub static ITEM_RECIPES: Lazy<Recipes> = Lazy::new(|| {
         ((Item::Cat, Item::Bird), Item::FoodChain),
         ((Item::Strong, Item::Bird), Item::Hawk),
         ((Item::Beef, Item::Plate), Item::Meal),
-        ((Item::Meal, Item::FoodChain), Item::Business),
     ]
     .into_iter()
     .for_each(|(key, value)| {
@@ -158,7 +158,7 @@ impl Item {
             Item::FoodChain => "Food Chain",
             Item::Hawk => "Hawk",
             Item::Meal => "Meal",
-            Item::Business => "Business",
+            Item::Rat => "Rat",
         }
     }
 }
