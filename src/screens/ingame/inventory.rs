@@ -68,16 +68,14 @@ impl Inventory {
                 if new_idx < self.found.len() {
                     self.select_idx = new_idx;
                 }
-            } else {
-                if self.current_page() + 1 < self.total_pages() {
-                    let new_idx = self.select_idx + PAGE_COUNT - (PAGE_COL_COUNT - 1);
+            } else if self.current_page() + 1 < self.total_pages() {
+                let new_idx = self.select_idx + PAGE_COUNT - (PAGE_COL_COUNT - 1);
 
-                    if new_idx < self.found.len() {
-                        self.select_idx = new_idx;
-                    } else {
-                        // just go to the next page and select the first item
-                        self.select_idx = (self.current_page() + 1) * PAGE_COUNT;
-                    }
+                if new_idx < self.found.len() {
+                    self.select_idx = new_idx;
+                } else {
+                    // just go to the next page and select the first item
+                    self.select_idx = (self.current_page() + 1) * PAGE_COUNT;
                 }
             }
         } else if input.pressed(BUTTON_LEFT) {
@@ -89,10 +87,8 @@ impl Inventory {
 
                 if old_row == new_row {
                     self.select_idx = new_idx;
-                } else {
-                    if self.current_page() != 0 {
-                        self.select_idx -= PAGE_COUNT - (PAGE_COL_COUNT - 1);
-                    }
+                } else if self.current_page() != 0 {
+                    self.select_idx -= PAGE_COUNT - (PAGE_COL_COUNT - 1);
                 }
             }
         } else if input.pressed(BUTTON_UP) {

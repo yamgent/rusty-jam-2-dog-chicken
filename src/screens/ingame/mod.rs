@@ -66,7 +66,7 @@ impl Screen for IngameScreen {
         }
 
         if self.found_popup.will_consume_input() {
-            self.found_popup.update(&input);
+            self.found_popup.update(input);
         } else {
             self.inventory.update(input);
 
