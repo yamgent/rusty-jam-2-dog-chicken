@@ -1,3 +1,7 @@
+mod found_popup;
+
+use found_popup::FoundPopup;
+
 use super::{win::WinScreen, Screen};
 use crate::{
     combine::Combine,
@@ -6,14 +10,13 @@ use crate::{
     item::Item,
     sounds,
     status_bar::{Status, StatusBar},
-    textscreen::TextScreen,
 };
 
 pub struct IngameScreen {
     inventory: Inventory,
     combine: Combine,
     status_bar: StatusBar,
-    textscreen: Option<TextScreen>,
+    found_popup: FoundPopup,
 }
 
 impl IngameScreen {
@@ -22,17 +25,15 @@ impl IngameScreen {
             inventory: Inventory::new(),
             combine: Combine::new(),
             status_bar: StatusBar::new(),
-            textscreen: None,
+            found_popup: FoundPopup::new(),
         }
     }
 }
 
 impl Screen for IngameScreen {
     fn update(&mut self, input: &Input) -> Option<Box<dyn Screen + Send>> {
-        if let Some(textscreen) = &self.textscreen {
-            if textscreen.update(input) {
-                self.textscreen = None;
-            }
+        if self.found_popup.will_consume_input() {
+            self.found_popup.update(&input);
         } else {
             self.inventory.update(input);
             let selected_item = self.inventory.selected_item();
@@ -47,7 +48,7 @@ impl Screen for IngameScreen {
                                 sounds::play_win();
                                 return Some(Box::new(WinScreen));
                             } else {
-                                self.textscreen = Some(TextScreen { found_item: item });
+                                self.found_popup.show(item);
                                 sounds::play_good();
                             }
                         }
@@ -69,12 +70,9 @@ impl Screen for IngameScreen {
     }
 
     fn draw(&self) {
-        self.combine.draw();
         self.inventory.draw();
+        self.combine.draw();
         self.status_bar.draw();
-
-        if let Some(textscreen) = &self.textscreen {
-            textscreen.draw();
-        }
+        self.found_popup.draw();
     }
 }

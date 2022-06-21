@@ -9,7 +9,6 @@ mod item;
 mod screens;
 mod sounds;
 mod status_bar;
-mod textscreen;
 mod ui;
 mod wasm4;
 
