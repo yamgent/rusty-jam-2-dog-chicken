@@ -4,7 +4,7 @@ A game written in Rust for the [WASM-4](https://wasm4.org) fantasy console.
 
 Written for the [Rusty Jam 2](https://itch.io/jam/rusty-jam-2) game jam. The theme is a picture of a dog combined with chicken.
 
-[**Click here to play on itch.io!**](https://github.com/yamgent/rusty-jam-2-dog-chicken)
+[**Click here to play on itch.io!**](https://yamgent.itch.io/find-the-dogchicken)
 
 ## Game Info
 
