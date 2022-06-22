@@ -51,7 +51,7 @@ pub const ITEM_HEIGHT_PX: u32 =
     assets::objects_png::OBJECTS_PNG_HEIGHT / OBJECTS_PNG_ALTAS_ROW_COUNT;
 
 pub fn draw_item(item_type: Item, x: i32, y: i32) {
-    unsafe { *DRAW_COLORS = 0x234 };
+    unsafe { *DRAW_COLORS = 0x324 };
 
     let src_x = ((item_type as u32) % OBJECTS_PNG_ALTAS_COL_COUNT) * ITEM_WIDTH_PX;
     let src_y = ((item_type as u32) / OBJECTS_PNG_ALTAS_COL_COUNT) * ITEM_HEIGHT_PX;
