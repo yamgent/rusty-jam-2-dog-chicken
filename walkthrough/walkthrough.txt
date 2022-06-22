@@ -1,0 +1,231 @@
+
+         _____ _           _   _____ _
+        |  ___(_)_ __   __| | |_   _| |__   ___
+        | |_  | | '_ \ / _` |   | | | '_ \ / _ \
+        |  _| | | | | | (_| |   | | | | | |  __/
+        |_|   |_|_| |_|\__,_|   |_| |_| |_|\___|
+  ____               ____ _     _      _
+ |  _ \  ___   __ _ / ___| |__ (_) ___| | _____ _ __
+ | | | |/ _ \ / _` | |   | '_ \| |/ __| |/ / _ \ '_ \
+ | |_| | (_) | (_| | |___| | | | | (__|   <  __/ | | |
+ |____/ \___/ \__, |\____|_| |_|_|\___|_|\_\___|_| |_|
+              |___/
+
+              A Complete Walkthrough for
+                 FIND THE DOGCHICKEN
+
+        (THIS WALKTHROUGH CONTAINS SPOILERS!)
+
+                     by: yamgent
+
+________________________________________________________
+
+=============
+  GAME INFO
+=============
+Title: Find the Dogchicken
+Platform: Web (includes Phone Web), PC, Linux
+Genre: Puzzle
+Developer: Wangleng Tan
+
+=============
+  GUIDE INFO
+=============
+Author: yamgent
+Version: 1.00
+Date: 22-Jun-1990
+
+=====================
+  TABLE OF CONTENTS
+=====================
+1. Introduction
+2. Interface & Controls
+3. Walkthrough
+    3.1 Quickest Way to DogChicken
+    3.2 100% Completion
+4. Closing Remarks
+
+________________________________________________________
+
+        1. Introduction
+________________________________________________________
+
+Welcome to the guide for Find the DogChicken! Find the
+DogChicken is a very peculiar game about finding your
+way through different objects by combining them, until
+you find an object that is a hybrid of a Dog and a
+Chicken fused together.
+
+Navigating through the bizarre combinations that the
+game provides can be fun but also tough, as some
+combinations are not extremely intuitive. Hence, this
+walkthrough is written to help you if you are in need
+of some hints.
+
+Besides leading you to the DogChicken, this guide also
+contains information for 100% completionists.
+
+________________________________________________________
+
+        2. Interface & Controls
+--------------------------------------------------------
+
+
+                -----------------------------
+  Status bar -> | Invalid combo             |
+                |  ____     ____     ____   |
+  Combine UI -> |  |  |  +  |  |  =  |  |   |
+                |  |__|     |__|     |__|   |
+                |                           |
+                |  ----------------------   |
+  Inventory ->  |  |                    |   |
+                |  |                    |   |
+                |  |____________________|   |
+                |                           |
+                |                      Page |    Inventory
+  Hovered   ->  | Tree                  1/2 | <- pages
+  item's name   -----------------------------
+
+Inventory: Shows the items that you currently have
+discovered. Each item will only appear once (combining
+the same item pairs multiple times does nothing).
+
+Hovered item's name: You can move the cursor inside
+the inventory area with the d-pad [<][>][^][v]. The
+item that the cursor is on will have its name shown
+here.
+
+Combine UI: When the cursor is hovering under an item
+you want to use, press [Z] to put it on the left side
+of the +, and press [X] to put it on the right side.
+(Note that if you are using phone WASM-4, the
+placement of the [Z] and [X] is a bit off in terms of
+direction...) Once both sides are filled, the game
+will automatically try to combine both items.
+
+Status bar: Shows the result of your combo. If the item
+pairs that you select cannot be combined, then it will
+say "Invalid combo". Otherwise, a popup will appear if
+you successfully combined an item pair for the first
+time.
+
+________________________________________________________
+
+        3. Walkthrough
+________________________________________________________
+
+======================================
+    3.1 Quickest Way to DogChicken
+======================================
+
+Below is the graph containing the minimal items you need
+to get before DogChicken is found:
+
+(Items in boxes are starting items)
+
+                 +--------+ +----+  +-----+ +----+ +-----+ +------+
+                 |Iron Ore| |Fire|  |Cloth| |Fire| | Cow | |Bottle|
+                 +-+------+ +--+-+  +--+--+ +--+-+ ++---++ +--+---+
+        +------+   |           |       |       |    |   |     |
++----+  | Tree |   |           |       |       |    |   |     |
+|Bush|  +-+---++   |           |       |       |    |   |     |
++--+-+    |   |    +-> Steel <-+       |       |    |   |     |
+   |      |   |         | |            |       v    |   v     |
+   |      |   v         | |            v     Beef <-+   Milk <+
+   | +----+--Axe <------+ +--------> Medal     |        |
+   | |    |   |                       |        |        |   +-----+
+   | |    |   |       +-----+         |        |        |   |Plate|
+   v v    |   v       |Cloth|         |        |        |   +--+--+
+  Grass   +> Twig--+  +-+---+         |        |        v      |
+     |       |     |    |             |        |     Mouse <---+
+     |       |     |    |             |        |      |
+     |       |     |    |             |        |      |
+     v       |     v    |             |        v      |  +----+
+   Bird <----+   Flag <-+             |       Cat <---+  |Comb|
+     |            |                   |        |         +-+--+
+     |            |                   |        v           |
+     | Plate      +---> Loyalty <-----+        Fur <-------+
+     |   |                 |                    |
+     |   |                 |                    |
+     v   v                 |                    |
+     Chicken               +----> Dog <---------+
+        |                          |
+        |                          |
+        |                          |
+        |                          |
+        |                          |
+        +--------> DogChicken <----+
+
+======================================
+    3.2 100% Completion
+======================================
+
+Once you reached the win screen, you will see the item
+count at the bottom left of the screen:
+
+
+             |^v^v^v^v^v^v^v^v^v^v^|
+             |                     |
+             |    Thank you for    |
+             |       playing       |
+             |                     |
+             | <33/40 found>       |
+             |_____________________|
+
+
+In order to find all 40 items, follow the combinations
+in this order:
+
+(Items with {} are starting items)
+
+  1. Steel <- {Iron Ore} + {Fire}
+  2. Milk <- {Cow} + {Bottle}
+  3. Beef <- {Cow} + {Fire}
+  4. Rum <- {Bottle} + {Water}
+  5. Axe <- {Tree} + Steel
+  6. Twig <- {Tree} + Axe
+  7. Flag <- {Cloth} + Twig
+  8. Medal <- {Cloth} + Steel
+  9. Grass <- Axe + {Bush}
+ 10. Mouse <- Milk + {Plate}
+ 11. Strong <- {Ball} + Steel
+ 12. Rust <- Steel + {Water}
+ 13. Meal <- Beef + {Plate}
+ 14. Tongs <- Steel + {Spring}
+ 15. Pirate <- Flag + Rum
+ 16. Loyalty <- Flag + Medal
+ 17. Bird <- Grass + Twig
+ 18. Swan <- {Water} + Bird
+ 19. Cat <- Beef + Mouse
+ 20. Fur <- Cat + {Comb}
+ 21. Crab <- Strong + Tongs
+ 22. Rustacean <- Crab + Rust
+ 23. PirateRustacean <- Pirate + Rustacean
+ 24. FoodChain <- Cat + Bird
+ 25. Hawk <- Strong + Bird
+ 26. Dog <- Fur + Loyalty
+ 27. Chicken <- Bird + {Plate}
+ 28. DogChicken <- Dog + Chicken
+
+________________________________________________________
+
+        4. Closing Remarks
+________________________________________________________
+
+This is the end of the guide. Thank you for following
+through, and I hope that you have found something
+useful.
+
+32 years into the future from the time of this writing,
+this game will pop up again as one of the entries in a
+game jam (by then, everyone would have forgotten about
+it, so it can be considered as a "brand new work"). If
+you happen to chance upon it 32 years from now, please
+remember to give your ratings during the rating period.
+The developer would certainly appreciate your feedback
+and support.
+
+Best regards,
+yamgent
+
+  THE END
