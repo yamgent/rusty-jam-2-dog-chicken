@@ -42,6 +42,18 @@ w4 run target/wasm32-unknown-unknown/release/cart.wasm
 
 For more info about setting up WASM-4, see the [quickstart guide](https://wasm4.org/docs/getting-started/setup?code-lang=rust#quickstart).
 
+## Release
+
+Ensure that you have binaryen optimizer installed: [binaryen releases](https://github.com/WebAssembly/binaryen/releases).
+
+(NOTE: wasm-opt version must be > 98 to have `--zero-filled-memory` option).
+
+Then, run the following:
+
+```shell
+./release.sh
+```
+
 ## Tests
 
 ```shell
