@@ -22,6 +22,6 @@ impl Screen for IntroScreen {
             80,
         );
 
-        ui::draw_text_top_center("[Press any key\nto start]", 80, 140);
+        ui::draw_text_top_center("[Press Z/X\nto start]", 80, 140);
     }
 }

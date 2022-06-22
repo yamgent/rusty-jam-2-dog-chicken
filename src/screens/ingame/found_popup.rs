@@ -32,7 +32,7 @@ impl FoundPopup {
             ui::draw_text_top_center("New item:", 80, 54);
             ui::draw_item(item, 80 - (ui::ITEM_WIDTH_PX as i32 / 2), 68);
             ui::draw_text_top_center(item.name(), 80, 96);
-            ui::draw_text_top_center("[Press any key\nto continue]", 80, 120);
+            ui::draw_text_top_center("[Press Z/X\nto continue]", 80, 120);
         }
     }
 
