@@ -2,7 +2,31 @@
 
 A game written in Rust for the [WASM-4](https://wasm4.org) fantasy console.
 
+Written for the [Rusty Jam 2](https://itch.io/jam/rusty-jam-2) game jam. The theme is a picture of a dog combined with chicken.
+
+## Game Info
+
+The objective is to combine items, and get the necessary items in order to eventually combine into a dogchicken.
+
+Controls:
+
+- `Z`: Select the first item to combine
+- `X`: Select the second item to combine
+- `<>^v`: Move the cursor around the list of items
+
 ## Building
+
+Ensure that you have w4 CLI installed (skip this step if you already have w4):
+
+```shell
+yarn global add wasm4
+```
+
+Update assets with the png2src script:
+
+```shell
+./png2src.sh
+```
 
 Build the cart by running:
 
@@ -17,6 +41,12 @@ w4 run target/wasm32-unknown-unknown/release/cart.wasm
 ```
 
 For more info about setting up WASM-4, see the [quickstart guide](https://wasm4.org/docs/getting-started/setup?code-lang=rust#quickstart).
+
+## Tests
+
+```shell
+./tests.sh
+```
 
 ## Links
 
