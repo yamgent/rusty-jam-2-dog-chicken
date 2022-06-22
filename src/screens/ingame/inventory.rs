@@ -32,6 +32,10 @@ impl Inventory {
         }
     }
 
+    pub fn found_total(&self) -> usize {
+        self.found.len()
+    }
+
     pub fn selected_item(&self) -> Item {
         self.found[self.select_idx]
     }

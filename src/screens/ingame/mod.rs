@@ -37,7 +37,7 @@ impl IngameScreen {
                 AddResult::Success => {
                     if matches!(item, Item::DogChicken) {
                         sounds::play_win();
-                        return Some(Box::new(WinScreen));
+                        return Some(Box::new(WinScreen::new(self.inventory.found_total())));
                     } else {
                         sounds::play_hit();
                         self.status_bar.status = Status::Info("NEW!!".to_string());
