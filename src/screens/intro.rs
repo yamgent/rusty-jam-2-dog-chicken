@@ -1,11 +1,11 @@
 use super::{ingame::IngameScreen, Screen};
-use crate::{input::Input, item::Item, ui};
+use crate::{input::Input, item::Item, ui, wasm4::BUTTON_1, wasm4::BUTTON_2};
 
 pub struct IntroScreen;
 
 impl Screen for IntroScreen {
     fn update(&mut self, input: &Input) -> Option<Box<dyn Screen + Send>> {
-        if input.pressed_any() {
+        if input.pressed(BUTTON_1) || input.pressed(BUTTON_2) {
             return Some(Box::new(IngameScreen::new()));
         }
         None

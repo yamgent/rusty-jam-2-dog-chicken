@@ -2,7 +2,7 @@ use crate::{
     input::Input,
     item::Item,
     ui,
-    wasm4::{rect, DRAW_COLORS},
+    wasm4::{rect, BUTTON_1, BUTTON_2, DRAW_COLORS},
 };
 
 pub struct FoundPopup {
@@ -19,7 +19,7 @@ impl FoundPopup {
     }
 
     pub fn update(&mut self, input: &Input) {
-        if input.pressed_any() {
+        if input.pressed(BUTTON_1) || input.pressed(BUTTON_2) {
             self.found_item = None;
         }
     }

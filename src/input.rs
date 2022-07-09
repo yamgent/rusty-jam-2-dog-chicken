@@ -25,6 +25,7 @@ impl Input {
         self.pressed & buttons != 0
     }
 
+    #[allow(dead_code)]
     pub fn pressed_any(&self) -> bool {
         self.pressed != 0
     }
