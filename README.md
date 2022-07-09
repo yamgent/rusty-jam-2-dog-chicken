@@ -16,13 +16,21 @@ Controls:
 - `X`: Select the second item to combine
 - `<>^v`: Move the cursor around the list of items
 
-## Building
+## Prerequisite
 
 Ensure that you have w4 CLI installed (skip this step if you already have w4):
 
 ```shell
 yarn global add wasm4
 ```
+
+## Development
+
+```shell
+w4 watch
+```
+
+## Building
 
 Update assets with the png2src script:
 
