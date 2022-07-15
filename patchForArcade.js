@@ -9,6 +9,17 @@ function replaceCheck(original, search, replace) {
   return result;
 }
 
+function insertAfter(original, search, toInsert) {
+  const index = original.indexOf(search);
+
+  if (index === -1) {
+    throw new Error(`Patch failed for: ${toInsert}`);
+  }
+
+  const pos = index + search.length;
+  return original.substr(0, pos) + toInsert + original.substr(pos);
+}
+
 function main() {
   const releaseHtmlPath = path.resolve(
     __dirname,
@@ -29,6 +40,20 @@ function main() {
     content,
     "(e[1].pressed||e[2].pressed||e[4].pressed||e[6].pressed)",
     "(e[1].pressed||e[3].pressed)"
+  );
+
+  // exit
+  content = replaceCheck(
+    content,
+    "e[9].pressed&&(this.showMenu=!0)",
+    "(e[5].pressed||e[10].pressed)&&(window.customExit())"
+  );
+
+  // exit script
+  content = insertAfter(
+    content,
+    "<body>",
+    "\n  <script>window.customExit = () => { window.__TAURI_INVOKE__({ cmd: 'tauri', __tauriModule: 'Process', message: { cmd: 'exit', exitCode: 0 }}) }</script>\n"
   );
 
   fs.writeFileSync(releaseHtmlPath, content, { encoding: "utf-8" });
