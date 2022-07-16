@@ -21,7 +21,7 @@ fn draw_select_item_frame(color: u16, x: i32, y: i32) {
     rect(x - 2, y - 2, ui::ITEM_WIDTH_PX + 4, ui::ITEM_HEIGHT_PX + 4);
 }
 
-fn draw_select_item(item: &Option<Item>, x: i32, y: i32) {
+fn draw_select_item(item: &Option<Item>, x: i32, y: i32, is_left: bool) {
     let color = match item {
         Some(_) => 0x22,
         None => 0x30,
@@ -31,6 +31,10 @@ fn draw_select_item(item: &Option<Item>, x: i32, y: i32) {
 
     if let Some(item) = item {
         ui::draw_item(*item, x, y);
+    } else if is_left {
+        ui::draw_text(" Z\nkey", x, y + 4);
+    } else {
+        ui::draw_text(" X\nkey", x, y + 4);
     }
 }
 
@@ -90,9 +94,9 @@ impl CombineUi {
     }
 
     pub fn draw(&self) {
-        draw_select_item(&self.left, 18, 16);
+        draw_select_item(&self.left, 18, 16, true);
         ui::draw_text("+", 50, 16 + 8);
-        draw_select_item(&self.right, 66, 16);
+        draw_select_item(&self.right, 66, 16, false);
         ui::draw_text("=", 100, 16 + 8);
         draw_result_box(&self.result, 116, 16);
     }
